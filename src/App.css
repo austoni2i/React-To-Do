@@ -1,5 +1,6 @@
 .App {
   text-align: center;
+  
 }
 
 .App-logo {
@@ -45,3 +46,24 @@
   height: 100px;    
 }
 
+
+#navRoot{
+  
+  background-color: #f4f4f4;
+  height: 100vh;
+
+}
+
+.listDesign{
+  
+  align-items: flex-start;
+  list-style-type:none;
+  display:inline;
+  
+}
+
+.material-icons{
+  vertical-align: middle;
+  margin-bottom: 4px;
+  color: #324bdf;
+}

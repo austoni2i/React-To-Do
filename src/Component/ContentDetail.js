@@ -12,7 +12,6 @@ const ContentDetail = () => {
     const dispatch = useDispatch()
     const addComment = () => {
 
-
         if (todoSelected == "") {
             alert("Please select a item from todo list")
         }
@@ -23,16 +22,17 @@ const ContentDetail = () => {
         if (!isEmpty(comment)) {
 
             todoList.map(todo => {
-                if (todo.todoTilte == todoSelected) {
+                if (todo.id == todoSelected) {
 
                     todo.taskList.map(tasks => {
-                        if (tasks.taskTilte == taskSelected) {
+                        if (tasks.id == taskSelected) {
                             tasks.comment = comment
-
-                            const cloneList = [...todoList]
-                            dispatch(setToDoList(cloneList));
+                            console.log(taskSelected);
+                            
+                            dispatch(setToDoList(todoList));
                             dispatch(setTodoSelected(todoSelected))
                             dispatch(setTaskSelected(taskSelected))
+                            
                             
                         }
                     })
@@ -53,12 +53,12 @@ const ContentDetail = () => {
     }
 
     const getComments = () => {
-
+        
         let commentVal = ""
         todoList.map(todo => {
-            if (todo.todoTilte == todoSelected) {
+            if (todo.id == todoSelected) {
                 todo.taskList.map(tasks => {
-                    if (tasks.taskTilte == taskSelected) {
+                    if (tasks.id == taskSelected) {
                         commentVal = tasks.comment
                     }
                 })

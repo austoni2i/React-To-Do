@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 const MainContent = () => {
 
     const [taskName, setTaskName] = useState("")
-    const todoSelected = useSelector(state => state.todoSelected)
+    let todoSelected = useSelector(state => state.todoSelected)
     const todoList = useSelector(state => state.todoList)
     const dispatch = useDispatch();
 
@@ -18,32 +18,32 @@ const MainContent = () => {
 
     const addTaskToList = (e) => {
 
-        if (todoSelected == "") {
-            alert("Please select a item from todo list")
-        }
+
         if (!isEmpty(taskName)) {
 
-            todoList.map(todo => {
-                if (todo.todoTilte == todoSelected) {
+            // update whole list here
+            todoList.map(todoItem => {
 
-                    todo.taskList = [...todo.taskList, {
+                if (todoSelected == todoItem.id) {
+
+                    todoItem.taskList = [...todoItem.taskList, {
+                        id: Date.now(),
                         taskTilte: taskName,
-                        comment:""
+                        comment: ""
                     }]
-
-                    const cloneList = [...todoList]
-                    dispatch(setToDoList(cloneList)) ;
-                    dispatch(setTodoSelected(todoSelected))
-                }  
+                }
             })
-            
+            dispatch(setToDoList(todoList));
+            dispatch(setTodoSelected(todoSelected))
+
+
         } else {
             alert("Task  cannot be empty")
         }
     }
 
-    const onTaskSelected = (e) =>{
-        dispatch(setTaskSelected(e.target.innerHTML))
+    const onTaskSelected = (taskClicked) => {
+        dispatch(setTaskSelected(taskClicked))
     }
 
 
@@ -52,25 +52,32 @@ const MainContent = () => {
         return (!str || 0 === str.length);
     }
 
+    const getTaskList = () => {
+
+        //if (todoSelected != "") {
+        return todoList.map(todoItem => {
+
+            if (todoSelected == todoItem.id) {
+
+                return todoItem.taskList.map(taskItem => (
+
+                    <li onClick={()=>{onTaskSelected(taskItem.id)}}>{taskItem.taskTilte}</li>
+                ))
+
+            }
+
+        })
+
+        // }
+    }
+
     return (
         <div>
-
-
             <input type="text" onChange={handleTaskName}></input><br></br>
             <button type="button" onClick={addTaskToList}>Add Task</button>
-            <ol>
-                {
-                    todoList.map(todo => {
-                        if (todo.todoTilte == todoSelected) {
-                            return todo.taskList.map(task => (
-                                <li onClick={onTaskSelected}>{task.taskTilte}</li>
-                            ))
-                        }
-                    })
-                }
-            </ol>
-
-
+            <ul>
+                {getTaskList()}
+            </ul>
         </div>
     )
 }
